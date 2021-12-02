@@ -24,7 +24,17 @@
     "scripts": {
         "start": "node ."
     },
-    "keywords": [],
+    "keywords": [
+        "discord-music-bot",
+        "discord",
+        "discordjs",
+        "discord.js",
+        "discord-bot",
+        "discord-js",
+        "discord-music",
+        "discord-music-bot-24-7",
+        "discord-musicbot"
+    ],
     "private": false,
     "engines": {
         "node": ">=16.0.0"

@@ -4,14 +4,14 @@
     "description": "build a discord music bot with one function!",
     "main": "./src/index.js",
     "bin": "./src/index.js",
-    "homepage": "https://github.com/DevelopersSupportAR/discord.music",
+    "homepage": "https://github.com/DevelopersSupportAR/music.kyp",
     "bugs": {
-        "url": "https://github.com/DevelopersSupportAR/discord.music/issues",
+        "url": "https://github.com/DevelopersSupportAR/music.kyp/issues",
         "email": "elqamirdotcom@gmail.com"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/DevelopersSupportAR/discord.music.git"
+        "url": "https://github.com/DevelopersSupportAR/music.kyp.git"
     },
     "dependencies": {
         "@discordjs/voice": "^0.7.5",

@@ -1,11 +1,11 @@
-# discord.music ✨
+# music.kyp ✨
 
 ##### easy discord music bot building ✨🎶
 
 ### Installation 🛠
 
 ```
-npm install discord.music@latest discord.js@13
+npm install music.kyp@latest discord.js@13
 ```
 
 ### useg 👨‍💻
@@ -36,10 +36,10 @@ const client = new Client({
 client.login("<your discord bot token>");
 ```
 
-now import the `discord.music` module
+now import the `music.kyp` module
 
 ```js
-const { Client: music } = require("discord.music");
+const { Client: music } = require("music.kyp");
 ```
 
 make a new music client
@@ -102,7 +102,7 @@ server queue is actually a javascript map;
 you can export it by:
 
 ```js
-const { Client: music, Queue } = require("discord.music");
+const { Client: music, Queue } = require("music.kyp");
 // "Queue" is a javascript map so you can set and get values from it, example:
 
 Queue.get("<guildID>"); // this return the guild queue it have to be something like that:
@@ -148,7 +148,7 @@ const client = new Client({
     ]
 });
 
-const { Client: music, Queue } = require("./src/index");
+const { Client: music, Queue } = require("music.kyp");
 const player = new music({ client });
 
 client.on("ready", () => console.log('okay!'));

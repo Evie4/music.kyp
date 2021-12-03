@@ -3,10 +3,26 @@ const intents = require("./data/connections/intents");
 const fs = require("fs");
 const data = require("./data/database/map");
 const EventEmitter = require("events");
-const chalk = require("chalk")
+const chalk = require("chalk");
+const speech = require("./dist/index"); // from: https://www.npmjs.com/package/discord-speech-recognition
 const emiiter = new EventEmitter();
 EventEmitter.defaultMaxListeners = 20;
 
+/**
+ * @typedef {(
+ *  "en"
+ *  "af-ZA"|"am-ET"|"hy-AM"|"az-AZ"|"id-ID"|"ms-MY"|"bn-BD"|"bn-IN"|"ca-ES"|"cs-CZ"|"da-DK"|"de-DE"|
+ *  "en-AU"|"en-CA"|"en-GH"|"en-GB"|"en-IN"|"en-IE"|"en-KE"|"en-NZ"|"en-NG"|"en-PH"|"en-SG"|"en-ZA"|
+ *  "en-TZ"|"en-US"|"es-AR"|"es-BO"|"es-CL"|"es-CO"|"es-CR"|"es-EC"|"es-SV"|"es-ES"|"es-US"|"es-GT"|
+ *  "es-HN"|"es-MX"|"es-NI"|"es-PA"|"es-PY"|"es-PE"|"es-PR"|"es-DO"|"es-UY"|"es-VE"|"eu-ES"|"fil-PH"|
+ *  "fr-CA"|"fr-FR"|"gl-ES"|"ka-GE"|"gu-IN"|"hr-HR"|"zu-ZA"|"is-IS"|"it-IT"|"jv-ID"|"kn-IN"|"km-KH"|
+ *  "lo-LA"|"lv-LV"|"lt-LT"|"hu-HU"|"ml-IN"|"mr-IN"|"nl-NL"|"ne-NP"|"nb-NO"|"pl-PL"|"pt-BR"|"pt-PT"|
+ *  "ro-RO"|"si-LK"|"sk-SK"|"sl-SI"|"su-ID"|"sw-TZ"|"sw-KE"|"fi-FI"|"sv-SE"|"ta-IN"|"ta-SG"|"ta-LK"|
+ *  "ta-MY"|"te-IN"|"vi-VN"|"tr-TR"|"ur-PK"|"ur-IN"|"el-GR"|"bg-BG"|"ru-RU"|"sr-RS"|"uk-UA"|"he-IL"|
+ *  "ar-IL"|"ar-JO"|"ar-AE"|"ar-BH"|"ar-DZ"|"ar-SA"|"ar-IQ"|"ar-KW"|"ar-MA"|"ar-TN"|"ar-OM"|"ar-PS"|
+ *  "ar-QA"|"ar-LB"|"ar-EG"|"fa-IR"|"hi-IN"|"th-TH"|"ko-KR"|"zh-TW"|"yue-Hant-HK"|"ja-JP"|"zh-HK"|"zh"
+ *  )} Language
+ */
 
 module.exports = {
     Client: class {
@@ -14,8 +30,20 @@ module.exports = {
          * 
          * @param {{
          *   token: string,
-         *   client: Client
+         *   client: Client,
+         *   lang: 
+         *  "af-ZA"|"am-ET"|"hy-AM"|"az-AZ"|"id-ID"|"ms-MY"|"bn-BD"|"bn-IN"|"ca-ES"|"cs-CZ"|"da-DK"|"de-DE"|
+         *  "en-AU"|"en-CA"|"en-GH"|"en-GB"|"en-IN"|"en-IE"|"en-KE"|"en-NZ"|"en-NG"|"en-PH"|"en-SG"|"en-ZA"|
+         *  "en-TZ"|"en-US"|"es-AR"|"es-BO"|"es-CL"|"es-CO"|"es-CR"|"es-EC"|"es-SV"|"es-ES"|"es-US"|"es-GT"|
+         *  "es-HN"|"es-MX"|"es-NI"|"es-PA"|"es-PY"|"es-PE"|"es-PR"|"es-DO"|"es-UY"|"es-VE"|"eu-ES"|"fil-PH"|
+         *  "fr-CA"|"fr-FR"|"gl-ES"|"ka-GE"|"gu-IN"|"hr-HR"|"zu-ZA"|"is-IS"|"it-IT"|"jv-ID"|"kn-IN"|"km-KH"|
+         *  "lo-LA"|"lv-LV"|"lt-LT"|"hu-HU"|"ml-IN"|"mr-IN"|"nl-NL"|"ne-NP"|"nb-NO"|"pl-PL"|"pt-BR"|"pt-PT"|
+         *  "ro-RO"|"si-LK"|"sk-SK"|"sl-SI"|"su-ID"|"sw-TZ"|"sw-KE"|"fi-FI"|"sv-SE"|"ta-IN"|"ta-SG"|"ta-LK"|
+         *  "ta-MY"|"te-IN"|"vi-VN"|"tr-TR"|"ur-PK"|"ur-IN"|"el-GR"|"bg-BG"|"ru-RU"|"sr-RS"|"uk-UA"|"he-IL"|
+         *  "ar-IL"|"ar-JO"|"ar-AE"|"ar-BH"|"ar-DZ"|"ar-SA"|"ar-IQ"|"ar-KW"|"ar-MA"|"ar-TN"|"ar-OM"|"ar-PS"|
+         *  "ar-QA"|"ar-LB"|"ar-EG"|"fa-IR"|"hi-IN"|"th-TH"|"ko-KR"|"zh-TW"|"yue-Hant-HK"|"ja-JP"|"zh-HK"|"zh",
          * }} props
+         * 
          * 
          * @example
          * const { Client: music } = require("music.easy");
@@ -56,6 +84,7 @@ module.exports = {
             this.events = emiiter;
             this.token = props["token"];
             this.client = props["client"];
+            this.speechLang = props["lang"]
             if (!this.token && !this.client) throw new Error("Please insert a bot token!");
             if (!this.client && !this.token) throw new Error("Please insert a bot client!");
             if (!this.client) {
@@ -65,10 +94,12 @@ module.exports = {
                 });
                 this.musicClient.login(this.token).then(() => {
                     console.log(chalk.magenta.bold("[ ~ ]") + chalk.blue(" Music System Connected!"));
+                    speech.addSpeechEvent(this.musicClient, { lang: this.speechLang || "en-US" });
                 }).catch(err => {
                     if (err) throw err;
                 });
             } else {
+                speech.addSpeechEvent(this.client, { lang: this.speechLang || "en-US" });
                 console.log(chalk.magenta.bold("[ ~ ]") + chalk.blue(" Connecting to discord.js client!"));
                 console.log(chalk.magenta.bold("[ ~ ]") + chalk.blue(" Music System Connected!"));
             }
@@ -186,6 +217,34 @@ module.exports = {
                 if (err) throw err;
                 for (const file of files) {
                     if (file.startsWith("loop")) require(__dirname + "/functions/" + file)(client, msg, arg, emiiter);
+                };
+            });
+        };
+        /**
+         * @param {Message | CommandInteraction } msg
+         *
+         */
+        connect(msg) {
+            let client = this.client;
+            if (!client) client = this.musicClient;
+            fs.readdir(__dirname + "/functions/", (err, files) => {
+                if (err) throw err;
+                for (const file of files) {
+                    if (file.startsWith("connect")) require(__dirname + "/functions/" + file)(client, msg, emiiter);
+                };
+            });
+        };
+        /**
+         * @param {Message | CommandInteraction } msg
+         *
+         */
+        disconnect(msg) {
+            let client = this.client;
+            if (!client) client = this.musicClient;
+            fs.readdir(__dirname + "/functions/", (err, files) => {
+                if (err) throw err;
+                for (const file of files) {
+                    if (file.startsWith("disconnect")) require(__dirname + "/functions/" + file)(client, msg, emiiter);
                 };
             });
         };

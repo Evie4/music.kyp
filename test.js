@@ -20,7 +20,7 @@ const client = new Client({
 });
 
 const { Client: music, Queue } = require("./src/index");
-const player = new music({ client });
+const player = new music({ client, lang: "ar-EG" });
 
 client.on("ready", () => console.log('okay!'));
 client.on("messageCreate", async(msg) => {
@@ -33,20 +33,76 @@ client.on("messageCreate", async(msg) => {
     else if (msg.content.startsWith("!skip")) player.skip(msg);
     else if (msg.content.startsWith("!volume")) player.volume(msg, msg.content.split(' ')[1]);
     else if (msg.content.startsWith("!search")) player.search(msg, msg.content.split(' ').slice(' ').join(' '))
-    else if (msg.content.startsWith("!loop")) player.loop(msg, msg.content.split(' ')[1])
+    else if (msg.content.startsWith("!loop")) player.loop(msg, msg.content.split(' ')[1]);
+    else if (msg.content.startsWith("!connect")) player.connect(msg);
+    else if (msg.content.startsWith("!disconnect")) player.disconnect(msg);
 });
-
-
-
+client.on("speech", (msg) => {
+    if (msg.content) {
+        msg.author.send(msg.content)
+        if ("Krypton000" == "cyber") console.log('whoot???');
+        else if (msg.content.includes("play") || msg.content.includes("شغل")) player.play(msg, msg.content.split(' ').slice(' ').join(' '));
+        else if (msg.content.includes("stop") || msg.content.includes("وقف")) player.stop(msg);
+        else if (msg.content.includes("pause") || msg.content.includes("اسكت")) player.pause(msg);
+        else if (msg.content.includes("resume") || msg.content.includes("كمل")) player.resume(msg);
+        else if (msg.content.includes("skip") || msg.content.includes("الي بعده")) player.skip(msg);
+    }
+});
 player.events
-    .on("playSong", (msg, song) => msg.channel.send({ content: `**${song.title}** is playing!` }))
-    .on("addSong", (msg, song) => msg.channel.send({ content: `**${song.title}** got added!` }))
-    .on("stopSong", (msg) => msg.channel.send({ content: `Music got stoped!.` }))
-    .on("resumeSong", (msg) => msg.channel.send({ content: `Music got resumed!.` }))
-    .on("pauseSong", (msg) => msg.channel.send({ content: `Music got paused!.` }))
-    .on("volumeSong", (msg, percentage) => msg.channel.send({ content: `Music volume has changed to: ${percentage}%` }))
-    .on("skipSong", (msg) => msg.channel.send({ content: `Music got skiped!.` }))
-    .on("loopSong", (msg, arg) => msg.channel.send({ content: `Music got looped ${arg}!.` }))
-    .on("search", (msg, arg, result) => msg.channel.send(result.map((video, index) => `#${index} - ${video.url}`).join("\n")));
+    .on("disconnected", (msg, connection, voiceChannel) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `bot disconnected to <#${voiceChannel.id}>` }) : "bad reading";
+    })
+    .on("connected", (msg, connection, voiceChannel) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `bot connected to <#${voiceChannel.id}>` }) : "bad reading";
+    })
+    .on("playSong", (msg, song) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `**${song.title}** is playing!` }) : "bad reading";
+    })
+    .on("addSong", (msg, song) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `**${song.title}** got added!` }) : "bad reading";
+    })
+    .on("stopSong", (msg) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `Music got stoped!.` }) : "bad reading";
+    })
+    .on("resumeSong", (msg) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `Music got resumed!.` }) : "bad reading";
+    })
+    .on("pauseSong", (msg) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `Music got paused!.` }) : "bad reading";
+    })
+    .on("volumeSong", (msg, percentage) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `Music volume has changed to: ${percentage}%` }) : "bad reading";
+    })
+    .on("skipSong", (msg) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `Music got skiped!.` }) : "bad reading";
+    })
+    .on("loopSong", (msg, arg) => {
+        let channel = msg.channel.type;
+        if (channel.type == "dm") return;
+        channel.send ? channel.send({ content: `Music got looped ${arg}!.` }) : "bad reading";
+    })
+    .on("search", (msg, arg, result) => {
+        let channel = msg.channel;
+        if (channel.type == "dm") return;
+        channel.send(result.map((video, index) => `#${index} - ${video.url}`).join("\n"))
+    });
 
-client.login("<your bot token>");
+client.login("");

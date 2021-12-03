@@ -11,7 +11,7 @@ const data = require("../data/database/map");
 module.exports = async(client, msg, emiiter) => {
     let player = require("./play").player;
     if (!player) throw new TypeError("thare are no music playing!?.");
-    let guildData = data.get(msg.guildId);
+    let guildData = data.get(msg.guild.id);
     if (!guildData) throw new TypeError("thare are no server queue!?.");
     let voiceChannel = msg.member.voice.channel;
     if (!voiceChannel) throw new TypeError("the member is not in a voice channel!.");

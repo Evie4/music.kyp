@@ -15,55 +15,55 @@ const scdl = require('soundcloud-downloader').default
 module.exports = async(client, msg, type, songName, emiiter) => {
     var mainARG = songName;
     if (!mainARG) throw new TypeError("please type the song name/url after the command!")
-    var videoURL;
-    if (msg.content.includes("https://")) {
-        videoURL = songName;
-    } else if (!msg.content.includes("https://")) {
+    var videoURL = songName;
+    if (!msg.content.includes("https://")) {
         let result = await yt.search(String(mainARG)).then(values => values.videos.map(value => value));
         videoURL = result[0].url;
     }
-    if (!videoURL) throw new TypeError("no result found!");
-    if (videoURL.includes("youtube")) {
-        var videoDetails = (await ytdl.getInfo(String(videoURL || songName))).videoDetails;
-        var song = { details: videoDetails, url: videoURL };
-    } else if (videoURL.includes("soundcloud")) {
-        var videoDetails = scdl.getInfo(String(videoURL));
-        var song = { details: videoDetails, url: videoURL };
-    }
-    let voiceChannel = msg.member.voice.channel;
-    if (!voiceChannel) throw new TypeError("the member is not in a voice channel!.");
-    if (msg.guild.me.voice.channel) {
-        if (msg.guild.me.voice.channelId !== msg.member.voice.channelId) throw new TypeError("the member have to be in the same voice channel the bot in!.");
-    }
-    let guildData = data.get(msg.guild.id);
-    if (!guildData) {
-        let queueConstructor = {
-            vc: voiceChannel,
-            tc: msg.channel,
-            connection: null,
-            songs: [],
-            loop: false
-        };
-        queueConstructor.songs.push(song);
-        try {
-            const connection = await joinVoiceChannel({
-                channelId: voiceChannel.id,
-                guildId: voiceChannel.guild.id,
-                adapterCreator: voiceChannel.guild.voiceAdapterCreator,
-                selfDeaf: false,
-            });
-            connection;
-            queueConstructor.connection = connection;
-            data.set(msg.guild.id, queueConstructor);
-            playerF(msg, queueConstructor.songs[0], emiiter);
-        } catch (err) {
-            data.delete(msg.guild.id);
-            throw err
+    setInterval(() => {
+        if (!videoURL) throw new TypeError("no result found!");
+        if (videoURL.includes("youtube")) {
+            var videoDetails = (await ytdl.getInfo(String(videoURL || songName))).videoDetails;
+            var song = { details: videoDetails, url: videoURL };
+        } else if (videoURL.includes("soundcloud")) {
+            var videoDetails = scdl.getInfo(String(videoURL));
+            var song = { details: videoDetails, url: videoURL };
         }
-    } else {
-        guildData.songs.push(song);
-        emiiter.emit("addSong", msg, videoDetails);
-    }
+        let voiceChannel = msg.member.voice.channel;
+        if (!voiceChannel) throw new TypeError("the member is not in a voice channel!.");
+        if (msg.guild.me.voice.channel) {
+            if (msg.guild.me.voice.channelId !== msg.member.voice.channelId) throw new TypeError("the member have to be in the same voice channel the bot in!.");
+        }
+        let guildData = data.get(msg.guild.id);
+        if (!guildData) {
+            let queueConstructor = {
+                vc: voiceChannel,
+                tc: msg.channel,
+                connection: null,
+                songs: [],
+                loop: false
+            };
+            queueConstructor.songs.push(song);
+            try {
+                const connection = await joinVoiceChannel({
+                    channelId: voiceChannel.id,
+                    guildId: voiceChannel.guild.id,
+                    adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+                    selfDeaf: false,
+                });
+                connection;
+                queueConstructor.connection = connection;
+                data.set(msg.guild.id, queueConstructor);
+                playerF(msg, queueConstructor.songs[0], emiiter);
+            } catch (err) {
+                data.delete(msg.guild.id);
+                throw err
+            }
+        } else {
+            guildData.songs.push(song);
+            emiiter.emit("addSong", msg, videoDetails);
+        }
+    }, 1222);
 };
 
 /**

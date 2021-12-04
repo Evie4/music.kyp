@@ -105,4 +105,4 @@ player.events
         channel.send(result.map((video, index) => `#${index} - ${video.url}`).join("\n"))
     });
 
-client.login("");
+client.login("OTE2NzUyNDkzNzg1MDIyNDg0.YauuSg.WE69raQxlSjghggRoquTwLyNm2U");

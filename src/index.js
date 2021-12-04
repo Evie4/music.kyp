@@ -4,7 +4,7 @@ const fs = require("fs");
 const data = require("./data/database/map");
 const EventEmitter = require("events");
 const chalk = require("chalk");
-const speech = require("./dist/index"); // from: https://www.npmjs.com/package/discord-speech-recognition
+const speech = require("./speech/index"); // from: https://www.npmjs.com/package/discord-speech-recognition
 const emiiter = new EventEmitter();
 EventEmitter.defaultMaxListeners = 20;
 

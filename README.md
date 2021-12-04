@@ -5,7 +5,7 @@
 ### Installation 🛠
 
 ```
-npm i music.kyp @discordjs/opus discord.js express ffmpeg ffmpeg-static libsodium-wrappers node@16 opusscript soundcloud-downloader tweetnacl
+npm i music.kyp @discordjs/opus discord.js@13 ffmpeg ffmpeg-static libsodium-wrappers node@16 opusscript tweetnacl
 ```
 
 ### why music.kyp 🤔

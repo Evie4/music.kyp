@@ -1,6 +1,6 @@
 {
     "name": "music.kyp",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "build a discord music bot with one function!",
     "main": "./src/index.js",
     "bin": "./src/index.js",
@@ -19,9 +19,11 @@
         "chalk": "4.1.2",
         "discord.js": "^13.3.1",
         "dotenv": "^10.0.0",
+        "soundcloud-downloader": "^1.0.0",
+        "spdl-core": "^2.0.2",
+        "wav": "^1.0.2",
         "yt-search": "^2.10.2",
-        "ytdl-core": "^4.9.1",
-        "soundcloud-downloader": "^1.0.0"
+        "ytdl-core": "^4.9.1"
     },
     "scripts": {
         "start": "node ."

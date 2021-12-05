@@ -11,7 +11,7 @@ npm i music.kyp @discordjs/opus discord.js@13 ffmpeg ffmpeg-static libsodium-wra
 ### why music.kyp 🤔
 
 - easy to use
-- just make the ytdl and souncloud functions easer
+- just make the ytdl and souncloud and spotify functions easer
 - simple an powerful
 
 ### useg 👨‍💻

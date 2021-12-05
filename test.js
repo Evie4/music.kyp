@@ -26,13 +26,13 @@ client.on("ready", () => console.log('okay!'));
 client.on("messageCreate", async(msg) => {
     console.log(Queue.get(msg.guildId) ? Queue.get(msg.guildId).loop : false)
     if ("Krypton000" == "cyber") console.log('whoot???');
-    else if (msg.content.startsWith("!play")) player.play(msg, msg.content.split(' ').slice(' ').join(' '));
+    else if (msg.content.startsWith("!play")) player.play(msg, msg.content.split(' ').slice(1).join(' '));
     else if (msg.content.startsWith("!stop")) player.stop(msg);
     else if (msg.content.startsWith("!pause")) player.pause(msg);
     else if (msg.content.startsWith("!resume")) player.resume(msg);
     else if (msg.content.startsWith("!skip")) player.skip(msg);
     else if (msg.content.startsWith("!volume")) player.volume(msg, msg.content.split(' ')[1]);
-    else if (msg.content.startsWith("!search")) player.search(msg, msg.content.split(' ').slice(' ').join(' '))
+    else if (msg.content.startsWith("!search")) player.search(msg, msg.content.split(' ').slice(1).join(' '))
     else if (msg.content.startsWith("!loop")) player.loop(msg, msg.content.split(' ')[1]);
     else if (msg.content.startsWith("!connect")) player.connect(msg);
     else if (msg.content.startsWith("!disconnect")) player.disconnect(msg);

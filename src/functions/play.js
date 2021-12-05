@@ -4,6 +4,7 @@ const ytdl = require("ytdl-core");
 const yt = require("yt-search");
 const data = require("../data/database/map");
 const scdl = require('soundcloud-downloader').default
+const spdl = require('spdl-core').default;
 
 /**
  * 
@@ -16,19 +17,24 @@ module.exports = async(client, msg, type, songName, emiiter) => {
     var mainARG = songName;
     if (!mainARG) throw new TypeError("please type the song name/url after the command!")
     var videoURL = songName;
+    var song;
     if (!msg.content.includes("https://")) {
         let result = await yt.search(String(mainARG)).then(values => values.videos.map(value => value));
         videoURL = result[0].url;
     }
-    setInterval(() => {
-        if (!videoURL) throw new TypeError("no result found!");
-        if (videoURL.includes("youtube")) {
-            var videoDetails = (await ytdl.getInfo(String(videoURL || songName))).videoDetails;
-            var song = { details: videoDetails, url: videoURL };
-        } else if (videoURL.includes("soundcloud")) {
-            var videoDetails = scdl.getInfo(String(videoURL));
-            var song = { details: videoDetails, url: videoURL };
-        }
+    if (!videoURL) throw new TypeError("no result found!");
+    if (videoURL.includes("youtube.com")) {
+        var videoID = await ytdl.getURLVideoID(videoURL);
+        var videoDetails = (await ytdl.getInfo(videoID)).videoDetails;
+        song = { details: videoDetails, url: videoURL };
+    } else if (videoURL.includes("soundcloud.com")) {
+        var videoDetails = scdl.getInfo(String(videoURL));
+        song = { details: videoDetails, url: videoURL };
+    } else if (videoURL.includes("spotify.com")) {
+        var videoDetails = spdl.getInfo(String(videoURL))
+        song = { details: videoDetails, url: videoURL };
+    }
+    setTimeout(async() => {
         let voiceChannel = msg.member.voice.channel;
         if (!voiceChannel) throw new TypeError("the member is not in a voice channel!.");
         if (msg.guild.me.voice.channel) {
@@ -94,7 +100,6 @@ async function playerF(msg, song, emiiter) {
         player.play(resource);
         guildData.connection.subscribe(player);
         player.on(AudioPlayerStatus.Idle, () => {
-            console.log(guildData.loop)
             if (guildData.loop == false) guildData.songs.shift();
             playerF(msg, guildData.songs[0], emiiter);
         });
@@ -113,11 +118,33 @@ async function playerF(msg, song, emiiter) {
             player.play(resource);
             guildData.connection.subscribe(player);
             player.on(AudioPlayerStatus.Idle, () => {
-                console.log(guildData.loop)
                 if (guildData.loop == false) guildData.songs.shift();
                 playerF(msg, guildData.songs[0], emiiter);
             });
             emiiter.emit("playSong", msg, videoDetails);
+        });
+    } else if (String(guildData.songs[0].url).includes("spotify")) {
+        spdl.getInfo(song.url).then(async infos => {
+            // let stram = await (await spdl(String(infos.url)));
+            let theSameMuisc = await (await yt.search(String(infos.title))).videos[0].url;
+            let stream = await ytdl(String(theSameMuisc), { filter: "audioonly" });
+            setTimeout(async() => {
+                const player = await createAudioPlayer({
+                    behaviors: {
+                        noSubscriber: NoSubscriberBehavior.Pause,
+                    },
+                });
+                module.exports.player = player;
+                const resource = createAudioResource(stream, { inlineVolume: true });
+                module.exports.resource = resource;
+                player.play(resource);
+                guildData.connection.subscribe(player);
+                player.on(AudioPlayerStatus.Idle, () => {
+                    if (guildData.loop == false) guildData.songs.shift();
+                    playerF(msg, guildData.songs[0], emiiter);
+                });
+                emiiter.emit("playSong", msg, infos);
+            }, 2888);
         });
     }
 };

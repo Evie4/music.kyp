@@ -1,0 +1,132 @@
+---
+title: play function
+section: Functions
+order: 2
+---
+#
+#
+#
+# Play Functions 🧪
+#
+#
+#
+## the concept
+
+```js live noInline
+// the "music.kyp" client
+const player = new music({ client });
+
+player.play(<Discord.Message | Discord.IntractionCommand>, <Song name/url: string>)
+
+```
+
+## example to use
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.content.startsWith("?play")) {
+        player.play(msg, msg.content.split(" ").slice(1).join(" "));
+    }
+});
+```
+
+that is good, but you can make better.
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.author.bot) return;
+    if (msg.channel.type == "DM") return;
+    if (msg.content.startsWith("?play")) {
+        msg.channel.send({
+            content: "Hold On...",
+            allowedMentions: {
+                repliedUser: false
+            }
+        }).then((message) => {
+            let songNameUrl = msg.content.split(" ").slice(1).join(" ");
+            if (!songNameUrl) return message.edit({
+                content: "please insert the song name/url after the command!?.",
+                allowedMentions: {
+                    repliedUser: false
+                }
+            });
+            if (!msg.member.voice.channel) return message.edit({
+                content: `please join a voice channel!?.`,
+                allowedMentions: {
+                    repliedUser: false
+                }
+            });
+            if (msg.guild.me.voice.channel) {
+                if (msg.member.voice.channelId !== msg.guild.me.voice.channelId) return message.edit({
+                    content: `please make sure you have joined the same channel iam in: <#${msg.guild.me.voice.channelId}>!?.`,
+                    allowedMentions: {
+                        repliedUser: false
+                    }
+                });
+            }
+            player.play(msg, songNameUrl);
+            player.events.on("playSong", (msg0, song) => {
+                let embed = new MessageEmbed()
+                    .setColor("AQUA")
+                    .setThumbnail(song.thumbnails ? song.thumbnails[0].url : message.guild.iconURL({ dynamic: true }))
+                    .setTitle(String(song.title))
+                    .setURL(song.video_url)
+                message.edit({
+                    content: "palying audio...",
+                    embeds: [embed]
+                })
+            }).on("addSong", (msg0, song) => {
+                message.edit({
+                    content: `**${song.title}** has added to queue!.`
+                });
+            });
+        });
+    }
+});
+```
+
+## thare are two event for this function **`playSong`** and **`addSong`**
+
+
+- **`playSong`**, run when the music got played!.
+
+```js live noInline
+player.on("playSong", async (msg, song) => {
+    // <"msg"> is an normal "Discord.Message" or "Discord.IntractionCommand",
+    //  so you can use it like any time. like:
+    msg.channel.send({
+        content: "the music is playing!!!."
+    });
+
+    // but you can make better with the "song" parmenter
+    // <"song"> is the song the bot just played, so you can make what?
+
+    msg.channel.send({
+        content: `**${song.title}** is just playing right now!!!.`
+    });
+});
+```
+
+
+- **`playSong`**, run when the music got add to the server queue!.
+
+```js live noInline
+player.on("addSong", async (msg, song) => {
+    // <"msg"> is an normal "Discord.Message" or "Discord.IntractionCommand",
+    //  so you can use it like any time. like:
+    msg.channel.send({
+        content: "the music is add to the queue!!!."
+    });
+
+    // but you can make better with the "song" parmenter
+    // <"song"> is the song the bot just played, so you can make what?
+
+    msg.channel.send({
+        content: `**${song.title}** is just added to the queue!!!.`
+    });
+});
+```
+
+the song parmenter return an a json object or a Promise
+you can find out the Reference from thare if the song url is from
+[youtube](https://music-kyp.ml/docs/youtube/) or [spotify](https://music-kyp.ml/docs/spotify/) or [soundcloud](https://music-kyp.ml/docs/soundcloud/)

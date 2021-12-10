@@ -1,0 +1,56 @@
+---
+title: Start Coding
+section: Functions
+order: 1
+---
+
+# The Base 🧩
+
+- first start make an new client
+
+```js
+// import the "discord.js" module
+const { Client, Intents } = require("discord.js");
+// make a new discord.js client;
+const client = new Client({
+    // all the intents that discord.js support
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILD_BANS,
+        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+        Intents.FLAGS.GUILD_INTEGRATIONS,
+        Intents.FLAGS.GUILD_WEBHOOKS,
+        Intents.FLAGS.GUILD_INVITES,
+        Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.GUILD_PRESENCES,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.GUILD_MESSAGE_TYPING,
+        Intents.FLAGS.DIRECT_MESSAGES,
+        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Intents.FLAGS.DIRECT_MESSAGE_TYPING
+    ]
+});
+// login in to the client white the bot tokne
+client.login("<your discord bot token>");
+```
+
+- start importing the **`"music.kyp"`** module
+
+```js
+const { Client: music } = require("music.kyp");
+```
+
+- make a new **`"music.kyp"`** client
+
+```js
+// the first way
+const player = new music({ client }); // the "client" is a normal discord.js@13 client
+
+// you can also do this
+const player = new music({ token: "your discord bot token" });
+
+// can extract the "discord.js" client you have make it with importing the bot token with:
+player.musicClient
+```

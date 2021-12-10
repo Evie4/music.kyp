@@ -1,0 +1,41 @@
+import {
+  ScreenContainer,
+  Button,
+  HeroSection,
+  Hero,
+  HeroBody,
+  HeroTitle,
+  HeroTeaser,
+  HeroActionList,
+  HeroAction,
+} from "smooth-doc/components";
+import heroBackgroundImageURL from "../images/hero-background.png";
+
+<HeroSection>
+  <Hero backgroundImageURL={heroBackgroundImageURL}>
+    <HeroBody>
+      <HeroTitle>Music.kyp.</HeroTitle>
+      <HeroTeaser>easy discord music bot building.</HeroTeaser>
+      <HeroActionList>
+        <HeroAction>
+          <Button
+            forwardedAs="a"
+            href="/docs/"
+          >
+          Getting Started
+          </Button>
+        </HeroAction>
+        <HeroAction>
+          <Button
+            variant="neutral"
+            forwardedAs="a"
+            href="https://github.com/DevelopersSupportAR/music.kyp"
+          >
+          Browse Github
+          </Button>
+        </HeroAction>
+      </HeroActionList>
+    </HeroBody>
+  </Hero>
+</HeroSection>
+

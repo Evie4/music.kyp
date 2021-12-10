@@ -1,0 +1,89 @@
+---
+title: disconnect function
+section: Functions
+order: 10
+---
+#
+#
+#
+# disconnect Functions 🧪
+#
+#
+#
+## the concept
+
+```js live noInline
+// the "music.kyp" client
+const player = new music({ client });
+
+player.disconnect(<Discord.Message | Discord.IntractionCommand>)
+
+```
+
+## example to use
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.content.startsWith("?disconnect")) {
+        player.disconnect(msg);
+    }
+});
+```
+
+that is good, but you can make better.
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.author.bot) return;
+    if (msg.channel.type == "DM") return;
+    if (msg.content.startsWith("?disconnect")) {
+        msg.channel.send({
+            content: "Hold On...",
+            allowedMentions: {
+                repliedUser: false
+            }
+        }).then((message) => {
+            if (!msg.member.voice.channel) return message.edit({
+                content: `please join a voice channel!?.`,
+                allowedMentions: {
+                    repliedUser: false
+                }
+            });
+            if (msg.guild.me.voice.channel) {
+                if (msg.member.voice.channelId !== msg.guild.me.voice.channelId) return message.edit({
+                    content: `please make sure you have joined the same channel iam in: <#${msg.guild.me.voice.channelId}>!?.`,
+                    allowedMentions: {
+                        repliedUser: false
+                    }
+                });
+            }
+            player.disconnect(msg);
+            player.events.on("disconnected", (msg, disconnection, voiceChannel) => {
+                message.edit({ content: `bot disconnected to <#${voiceChannel.id}>` });
+            });
+        });
+    }
+});
+```
+
+## thare are one event for this function **`disconnected`**
+
+
+- **`disconnected`**, run when the music got played!.
+
+```js live noInline
+player.on("disconnected", async (msg, disconnection, voiceChannel) => {
+    // <"msg"> is an normal "Discord.Message" or "Discord.IntractionCommand",
+    //  so you can use it like any time. like:
+    msg.channel.send({
+        content: "the music got puased!!!."
+    });
+
+    // <"disconnection">  is an normal "Discordjs/voice disconnection"
+    // <"voiceChannel"> is the voice channel the bot has disconnected to
+
+    msg.channel.send({
+        content: `bot disconnected from <#${voiceChannel.id}>`
+    });
+});
+```

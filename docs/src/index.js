@@ -1,3 +1,0 @@
-/**
- * its about power
- */

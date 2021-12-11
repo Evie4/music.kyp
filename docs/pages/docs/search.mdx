@@ -1,0 +1,89 @@
+---
+title: search function
+section: Functions
+order: 5
+---
+#
+#
+#
+# Search Functions 🧪
+#
+#
+#
+## the concept
+
+```js live noInline
+// the "music.kyp" client
+const player = new music({ client });
+
+player.search(<Discord.Message | Discord.IntractionCommand>, arg <string>)
+
+```
+
+## example to use
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.content.startsWith("?search")) {
+        player.search(msg, msg.content.split(" ").slice(1).join(" "));
+    }
+});
+```
+
+that is good, but you can make better.
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.author.bot) return;
+    if (msg.channel.type == "DM") return;
+    if (msg.content.startsWith("?search")) {
+        msg.channel.send({
+            content: "Hold On...",
+            allowedMentions: {
+                repliedUser: false
+            }
+        }).then((message) => {
+            let arg = msg.content.split(" ").slice(1).join(" ");
+            if (!arg) return message.edit({
+                content: "please insert the song name after the command!?.",
+                allowedMentions: {
+                    repliedUser: false
+                }
+            });
+            player.search(msg, arg);
+            player.events.on("search", (msg, arg, result) => {
+                let results = result.map((song, index) => `#${index} - [${song.title}](${song.url})`).slice(0, 10).join("\n")
+                let embed = new MessageEmbed()
+                    .setColor("AQUA")
+                    .setDescription(results)
+                message.edit({
+                    content: "search result for: " + arg,
+                    embeds: [embed]
+                });
+            });
+        });
+    }
+});
+```
+
+## thare are one event for this function **`search`**
+
+
+- **`search`**, run when the music got played!.
+
+```js live noInline
+player.on("search", async (msg, arg) => {
+    // <"msg"> is an normal "Discord.Message" or "Discord.IntractionCommand",
+    //  so you can use it like any time. like:
+    msg.channel.send({
+        content: "the music is searching!!!."
+    });
+
+    // but you can make better with the "arg" parmenter
+    // <"arg"> is argument you set as true or false?
+    let results = result.map((song, index) => `#${index} - [${song.title}](${song.url})`).slice(0, 10).join("\n")
+    msg.channel.send({
+        content: String(results)
+    });
+});
+```

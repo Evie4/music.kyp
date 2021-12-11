@@ -1,0 +1,33 @@
+---
+title: Queue Reference
+section: Reference
+order: 4
+---
+#
+#
+#
+# Reference of server Queue 🧨
+#
+#
+#
+## the concept
+
+the server queue looks like
+
+## Reference
+
+```json
+{
+    vc: <Discord.VoiceChannel>,
+    tc: <Discord.TextChannel>,
+    connection: <@discordjs/voice connection>,
+    songs: [
+        {
+            url: "<the song url>",
+            details: "<the song detals>"
+        },
+        ...
+    ],
+    loop: <boolean>
+}
+```

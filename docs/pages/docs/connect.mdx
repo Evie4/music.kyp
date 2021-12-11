@@ -1,0 +1,89 @@
+---
+title: connect function
+section: Functions
+order: 9
+---
+#
+#
+#
+# connect Functions 🧪
+#
+#
+#
+## the concept
+
+```js live noInline
+// the "music.kyp" client
+const player = new music({ client });
+
+player.connect(<Discord.Message | Discord.IntractionCommand>)
+
+```
+
+## example to use
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.content.startsWith("?connect")) {
+        player.connect(msg);
+    }
+});
+```
+
+that is good, but you can make better.
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.author.bot) return;
+    if (msg.channel.type == "DM") return;
+    if (msg.content.startsWith("?connect")) {
+        msg.channel.send({
+            content: "Hold On...",
+            allowedMentions: {
+                repliedUser: false
+            }
+        }).then((message) => {
+            if (!msg.member.voice.channel) return message.edit({
+                content: `please join a voice channel!?.`,
+                allowedMentions: {
+                    repliedUser: false
+                }
+            });
+            if (msg.guild.me.voice.channel) {
+                if (msg.member.voice.channelId !== msg.guild.me.voice.channelId) return message.edit({
+                    content: `please make sure you have joined the same channel iam in: <#${msg.guild.me.voice.channelId}>!?.`,
+                    allowedMentions: {
+                        repliedUser: false
+                    }
+                });
+            }
+            player.connect(msg);
+            player.events.on("connected", (msg, connection, voiceChannel) => {
+                message.edit({ content: `bot connected to <#${voiceChannel.id}>` });
+            });
+        });
+    }
+});
+```
+
+## thare are one event for this function **`connected`**
+
+
+- **`connected`**, run when the music got played!.
+
+```js live noInline
+player.on("connected", async (msg, connection, voiceChannel) => {
+    // <"msg"> is an normal "Discord.Message" or "Discord.IntractionCommand",
+    //  so you can use it like any time. like:
+    msg.channel.send({
+        content: "the music got puased!!!."
+    });
+
+    // <"connection">  is an normal "Discordjs/voice connection"
+    // <"voiceChannel"> is the voice channel the bot has connected to
+
+    msg.channel.send({
+        content: `bot connected to <#${voiceChannel.id}>`
+    });
+});
+```

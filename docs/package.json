@@ -1,0 +1,22 @@
+{
+  "homepage": "http://N1R0tka.github.io/kyp.docs",
+  "name": "smooth-doc-starter",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "predeploy": "npm run build && npm run serve",
+    "deploy": "gh-pages -d build",
+    "develop": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve"
+  },
+  "dependencies": {
+    "gatsby": "^2.15.18",
+    "react": "^16.14.0",
+    "react-dom": "^16.10.1",
+    "smooth-doc": "^5.0.4"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  }
+}

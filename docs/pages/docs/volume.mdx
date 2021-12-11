@@ -1,0 +1,105 @@
+---
+title: volume function
+section: Functions
+order: 3
+---
+#
+#
+#
+# Volume Functions 🧪
+#
+#
+#
+## the concept
+
+```js live noInline
+// the "music.kyp" client
+const player = new music({ client });
+
+player.volume(<Discord.Message | Discord.IntractionCommand>, percentage <number>)
+
+```
+
+## example to use
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.content.startsWith("?volume")) {
+        player.volume(msg, msg.content.split(" ")[1]);
+    }
+});
+```
+
+that is good, but you can make better.
+
+```js live noInline
+client.on("messageCreate", async (msg) => {
+    if (msg.author.bot) return;
+    if (msg.channel.type == "DM") return;
+    if (msg.content.startsWith("?volume")) {
+        msg.channel.send({
+            content: "Hold On...",
+            allowedMentions: {
+                repliedUser: false
+            }
+            }).then((message) => {
+            let percentage = msg.content.split(" ").slice(1).join(" ");
+            if (!percentage) return message.edit({
+                content: "please insert the song new volume!?.",
+                allowedMentions: {
+                repliedUser: false
+                }
+            });
+            if (!msg.member.voice.channel) return message.edit({
+                content: `please join a voice channel!?.`,
+                allowedMentions: {
+                repliedUser: false
+                }
+            });
+            if (msg.guild.me.voice.channel) {
+                if (msg.member.voice.channelId !== msg.guild.me.voice.channelId) return message.edit({
+                content: `please make sure you have joined the same channel iam in: <#${msg.guild.me.voice.channelId}>!?.`,
+                allowedMentions: {
+                    repliedUser: false
+                }
+                });
+            }
+            let queue = Queue.get(msg.guildId);
+            if (!queue) return message.edit({
+                content: `thare are no server queue!?.`,
+                allowedMentions: {
+                repliedUser: false
+                }
+            });
+            player.volume(msg, percentage);
+            player.events.on("volumeSong", (msg, percentage) => {
+                message.edit({
+                    content: `Music volume has changed to: ${percentage}%`,
+                });
+            });
+        });
+    }
+});
+```
+
+## thare are one event for this function **`volumeSong`**
+
+
+- **`volumeSong`**, run when the music got played!.
+
+```js live noInline
+player.on("loopSong", async (msg, percentage) => {
+    // <"msgvolumeSong is an normal "Discord.Message" or "Discord.IntractionCommand",
+    //  so you can use it like any time. like:
+    msg.channel.send({
+        content: "the music volume changed!!!."
+    });
+
+    // but you can make better with the "percentage" parmenter
+    // <"percentage"> is argument you set as number?
+
+    msg.channel.send({
+        content: `the music volume changed to \`${percentage}\``
+    });
+});
+```

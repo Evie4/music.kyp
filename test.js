@@ -60,6 +60,7 @@ player.events
         channel.send ? channel.send({ content: `bot connected to <#${voiceChannel.id}>` }) : "bad reading";
     })
     .on("playSong", (msg, song) => {
+        console.log(song)
         let channel = msg.channel;
         if (channel.type == "dm") return;
         channel.send ? channel.send({ content: `**${song.title}** is playing!` }) : "bad reading";
@@ -105,4 +106,4 @@ player.events
         channel.send(result.map((video, index) => `#${index} - ${video.url}`).join("\n"))
     });
 
-client.login("OTE2NzUyNDkzNzg1MDIyNDg0.YauuSg.WE69raQxlSjghggRoquTwLyNm2U");
+client.login("OTE3NTU5NTIwODM2ODY2MTQ5.Ya6d5Q.IgHilOPh7CIAF-rdEAgrmVMb61c");

@@ -1,61 +1,61 @@
 {
-    "name": "music.kyp",
-    "version": "0.1.4",
-    "description": "build a discord music bot with one function!",
-    "main": "./src/index.js",
-    "bin": "./src/index.js",
-    "homepage": "https://github.com/DevelopersSupportAR/music.kyp",
-    "bugs": {
-        "url": "https://github.com/DevelopersSupportAR/music.kyp/issues",
-        "email": "elqamirdotcom@gmail.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/DevelopersSupportAR/music.kyp.git"
-    },
-    "dependencies": {
-        "@discordjs/opus": "^0.7.0",
-        "@discordjs/voice": "^0.7.5",
-        "avconv": "^3.1.0",
-        "axios": "^0.24.0",
-        "chalk": "^4.1.2",
-        "discord.js": "^13.4.0",
-        "ffmpeg": "^0.0.4",
-        "ffmpeg-static": "^4.4.0",
-        "libsodium-wrappers": "^0.7.9",
-        "node-fetch": "^2.6.6",
-        "node-opus": "^0.3.3",
-        "opusscript": "^0.0.8",
-        "soundcloud-downloader": "^0.2.4",
-        "spdl-core": "^2.0.2",
-        "tweetnacl": "^1.0.3",
-        "wav": "^1.0.2",
-        "yt-search": "^2.10.2",
-        "ytdl-core": "^4.9.2"
-    },
-    "scripts": {
-        "start": "node ."
-    },
-    "keywords": [
-        "discord-music-bot",
-        "discord",
-        "discordjs",
-        "discord.js",
-        "discord-bot",
-        "discord-js",
-        "discord-music",
-        "discord-music-bot-24-7",
-        "discord-musicbot"
-    ],
-    "private": false,
-    "engines": {
-        "node": ">=16.0.0"
-    },
-    "author": "kypton",
-    "license": "MIT",
-    "engineStrict": true,
-    "devDependencies": {
-        "typescript": "^4.4.3",
-        "yarn": ""
-    }
+  "name": "music.kyp",
+  "version": "0.1.8",
+  "description": "build a discord music bot with one function!",
+  "main": "./src/index.js",
+  "bin": "./src/index.js",
+  "homepage": "https://music-kyp.ml",
+  "bugs": {
+    "url": "https://github.com/DevelopersSupportAR/music.kyp/issues",
+    "email": "elqamirdotcom@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DevelopersSupportAR/music.kyp.git"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.7.0",
+    "@discordjs/voice": "^0.7.5",
+    "avconv": "^3.1.0",
+    "axios": "^0.24.0",
+    "chalk": "^4.1.2",
+    "discord.js": "^13.4.0",
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.4.0",
+    "libsodium-wrappers": "^0.7.9",
+    "node-fetch": "^2.6.6",
+    "node-opus": "^0.3.3",
+    "opusscript": "^0.0.8",
+    "soundcloud-downloader": "^0.2.4",
+    "spdl-core": "^2.0.2",
+    "tweetnacl": "^1.0.3",
+    "wav": "^1.0.2",
+    "yt-search": "^2.10.2",
+    "ytdl-core": "^4.9.2"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "keywords": [
+    "discord-music-bot",
+    "discord",
+    "discordjs",
+    "discord.js",
+    "discord-bot",
+    "discord-js",
+    "discord-music",
+    "discord-music-bot-24-7",
+    "discord-musicbot"
+  ],
+  "private": false,
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": "kypton",
+  "license": "MIT",
+  "engineStrict": true,
+  "devDependencies": {
+    "typescript": "^4.4.3",
+    "yarn": ""
+  }
 }

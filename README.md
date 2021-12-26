@@ -5,14 +5,14 @@
 ### Installation 🛠
 
 ```
-npm i music.kyp @discordjs/opus discord.js@13 ffmpeg ffmpeg-static libsodium-wrappers node@16 opusscript tweetnacl
+npm i music.kyp
 ```
 
 ### why music.kyp 🤔
 
 - easy to use
 - just make the ytdl and souncloud and spotify functions easer
-- simple an powerful
+- simple and powerful
 
 ### useg 👨‍💻
 
@@ -198,12 +198,16 @@ Queue.get("<guildID>"); // this return the guild queue it have to be something l
 */
 ```
 
-finally this a full example if you need:
+finally this a full example and the docs if you need:
 
 [normal music bot example](https://github.com/DevelopersSupportAR/music.kyp/tree/master/example/normal)
+
 [speech music bot example](https://github.com/DevelopersSupportAR/music.kyp/tree/master/example/speech)
 
+[Docs](https://music-kyp.ml)
 
 and that's it :)
+
 the source on github if you won't to pull any update :)))
+
 bay 👋

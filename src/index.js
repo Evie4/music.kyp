@@ -83,16 +83,18 @@ module.exports = {
     constructor(props) {
       const gitHubPath = "DevelopersSupportAR/music.kyp";
       const url = "https://api.github.com/repos/" + gitHubPath + "/tags";
-      const response = await fetch(url);
-      const data = await response.json();
-      if (data[0].name !== "0.1.3") {
-        console.warn(
-          chalk.yellow.bold("WORNING: ") +
-            chalk.blue.bold(
-              'music.kyp out of data, run "npm i music.kyp@latest"'
-            )
-        );
-      }
+      const response = fetch(url);
+      const data = response.json();
+      setTimeout(() => {
+        if (data[0].name !== "0.1.3") {
+          console.warn(
+            chalk.yellow.bold("WORNING: ") +
+              chalk.blue.bold(
+                'music.kyp out of data, run "npm i music.kyp@latest"'
+              )
+          );
+        }
+      }, 4000);
       console.log(
         chalk.magenta.bold("[ ~ ]") + chalk.blue(" Creating a music client!")
       );

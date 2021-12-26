@@ -1,6 +1,6 @@
 {
     "name": "music.kyp",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "build a discord music bot with one function!",
     "main": "./src/index.js",
     "bin": "./src/index.js",
